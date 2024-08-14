@@ -12,7 +12,7 @@ import {AuthScreen, HomeScreen, OnBoardingScreen} from './src/screens';
 export type AppStackParams = {
   Auth: undefined;
   OnBoarding: undefined;
-  Home: {totalScore: number};
+  Home: undefined;
 };
 
 export type AppNavigationProps = StackNavigationProp<AppStackParams>;
