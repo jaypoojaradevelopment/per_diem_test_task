@@ -25,6 +25,7 @@ const App = () => {
       <StatusBar backgroundColor={colors.primary} />
       <NavigationContainer>
         <Stack.Navigator
+          initialRouteName="OnBoarding"
           screenOptions={{
             headerShown: false,
           }}>

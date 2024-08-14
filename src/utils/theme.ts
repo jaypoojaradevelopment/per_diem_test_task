@@ -2,7 +2,7 @@ const colors = {
   green: '#02AA15',
   yellow: '#F3FF00',
   red: '#FF0000',
-  primary: '#694F8E',
+  primary: '#573a29',
   primaryLight: '#AC97C9',
   btnColor: '#FCA851',
   white: '#fff',
