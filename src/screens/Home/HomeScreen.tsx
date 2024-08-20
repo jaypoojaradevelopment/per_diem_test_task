@@ -8,33 +8,33 @@ import {
   View,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
-import {Item} from '../../components/ListTile';
 import {colors} from '../../utils/theme';
 import {FullScreenContainer, ListTile, DatePicker} from '../../components';
 import storageHelper from '../../helper/storageHelper';
-import lodash from 'lodash';
 import notifee, {AuthorizationStatus} from '@notifee/react-native';
 import {useNavigation} from '@react-navigation/native';
 import {AppNavigationProps} from '../../../App';
 import AppIcon, {IconProvider} from '../../helper/appIcon';
 import {Menu, MenuItem} from 'react-native-material-menu';
 import EmptyComponent from '../../components/EmptyComponent';
+import useItemList from '../../hooks/useItemList';
 
 const HomeScreen = () => {
   const navigation = useNavigation<AppNavigationProps>();
-  const [itemName, setItemName] = useState<string>();
-  const [date, setDate] = useState<Date>();
-  const [itemList, setItemList] = useState<Item[]>([]);
   const [visible, setVisible] = useState<boolean>(false);
+
+  const {
+    itemList,
+    addItem,
+    itemName,
+    setItemName,
+    date,
+    setDate,
+    handleSwitch,
+  } = useItemList();
 
   const init = useCallback(async () => {
     await notifee.requestPermission();
-    const storedData = await storageHelper.getItem(
-      storageHelper.STORAGE_KEYS.LIST_DATA,
-    );
-    if (storedData) {
-      setItemList(JSON.parse(storedData));
-    }
     checkNotificationPermission();
   }, []);
 
@@ -51,42 +51,6 @@ const HomeScreen = () => {
         [],
       );
     }
-  };
-
-  const handleSubmitBtn = async () => {
-    if (!itemName || !date) {
-      return;
-    }
-    const newItem: Item = {
-      id: new Date().getTime().toString(),
-      itemName,
-      date,
-      isAvailable: false,
-    };
-
-    const update = itemList;
-    update.push(newItem);
-    await storeData(update);
-  };
-
-  const clearForm = () => {
-    setItemName(undefined);
-    setDate(undefined);
-  };
-
-  const handleSwitch = async (value: boolean, index: number) => {
-    const update = itemList;
-    update[index].isAvailable = value;
-    await storeData(lodash.cloneDeep(update));
-  };
-
-  const storeData = async (update: Item[]) => {
-    await storageHelper
-      .saveItem(storageHelper.STORAGE_KEYS.LIST_DATA, JSON.stringify(update))
-      .then(() => {
-        setItemList(update);
-        clearForm();
-      });
   };
 
   const showMenu = () => setVisible(true);
@@ -136,7 +100,7 @@ const HomeScreen = () => {
         </View>
         <TouchableOpacity
           disabled={isDisabled}
-          onPress={handleSubmitBtn}
+          onPress={addItem}
           style={styles.submitButton}>
           <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
