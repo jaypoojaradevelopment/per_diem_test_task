@@ -19,6 +19,7 @@ import storageHelper from '../../helper/storageHelper';
 import {colors} from '../../utils/theme';
 import {ErrorToast} from '../../helper/utilsHelper';
 import {onGoogleButtonPress} from '../../helper/firebaseAuthHelper';
+import {isError} from 'lodash';
 
 const AuthScreen = () => {
   const [username, setUsername] = useState<string>();
@@ -56,8 +57,10 @@ const AuthScreen = () => {
       } else {
         ErrorToast('Invalid username or password');
       }
-    } catch (error: unknown) {
-      ErrorToast(error);
+    } catch (error) {
+      if (isError(error)) {
+        ErrorToast(error.message);
+      }
     } finally {
       setGoogleLoading(false);
     }
