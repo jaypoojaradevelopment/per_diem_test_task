@@ -31,9 +31,7 @@ const AuthScreen = () => {
 
   useEffect(() => {
     init();
-    return () => {
-      SplashScreen.hide();
-    };
+    return SplashScreen.hide;
   }, [init]);
 
   return (
