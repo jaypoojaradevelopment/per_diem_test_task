@@ -14,12 +14,17 @@ import {FullScreenContainer, ListTile, DatePicker} from '../../components';
 import storageHelper from '../../helper/storageHelper';
 import lodash from 'lodash';
 import notifee, {AuthorizationStatus} from '@notifee/react-native';
+import {useNavigation} from '@react-navigation/native';
+import {AppNavigationProps} from '../../../App';
+import AppIcon, {IconProvider} from '../../helper/appIcon';
+import {Menu, MenuItem} from 'react-native-material-menu';
 
 const HomeScreen = () => {
+  const navigation = useNavigation<AppNavigationProps>();
   const [itemName, setItemName] = useState<string>();
   const [date, setDate] = useState<Date>();
-
   const [itemList, setItemList] = useState<Item[]>([]);
+  const [visible, setVisible] = useState<boolean>(false);
 
   const init = useCallback(async () => {
     const storedData = await storageHelper.getItem(
@@ -82,17 +87,46 @@ const HomeScreen = () => {
       });
   };
 
+  const showMenu = () => setVisible(true);
+
+  const hideMenu = () => setVisible(false);
+
+  const handleLogOut = async () => {
+    await storageHelper.removeItem(storageHelper.STORAGE_KEYS.TOKEN);
+    await storageHelper.removeItem(storageHelper.STORAGE_KEYS.LIST_DATA);
+    hideMenu();
+    navigation.replace('LoginScreen');
+  };
+
   const isDisabled = Boolean(!itemName || !date);
 
   return (
     <FullScreenContainer style={styles.container}>
-      <Text style={styles.headerText}>Home</Text>
+      <View style={styles.headerView}>
+        <Text style={styles.headerText}>Home</Text>
+        <Menu
+          visible={visible}
+          onRequestClose={hideMenu}
+          anchor={
+            <TouchableOpacity onPress={showMenu}>
+            <AppIcon
+              icon="more-v-a"
+              iconProvider={IconProvider.fontisto}
+              size={18}
+              color={colors.black}
+            />
+            </TouchableOpacity>
+          }>
+          <MenuItem onPress={handleLogOut}>Log Out</MenuItem>
+        </Menu>
+      </View>
       <View style={styles.inputContainer}>
         <View style={styles.inputWrapper}>
           <TextInput
             placeholder="Enter item name"
             value={itemName}
             style={styles.textInput}
+            placeholderTextColor={colors.gray}
             onChangeText={setItemName}
           />
           <View style={styles.separator} />
@@ -166,5 +200,10 @@ const styles = StyleSheet.create({
   },
   listContent: {
     gap: 15,
+  },
+  headerView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });

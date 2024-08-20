@@ -79,6 +79,7 @@ const AuthScreen = () => {
               placeholder="Username"
               style={styles.input}
               onChangeText={setUsername}
+              placeholderTextColor={colors.gray}
             />
             <TextInput
               secureTextEntry
@@ -86,6 +87,7 @@ const AuthScreen = () => {
               placeholder="Password"
               style={styles.input}
               onChangeText={setPassword}
+              placeholderTextColor={colors.gray}
             />
           </View>
           <AppButton
@@ -133,6 +135,7 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     letterSpacing: 0.6,
     fontWeight: 'bold',
+    color: colors.black,
   },
   inputContainer: {
     gap: 15,
@@ -145,6 +148,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#e2e2e2',
+    color: colors.black
   },
   dividerContainer: {
     marginVertical: 35,

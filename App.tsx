@@ -65,13 +65,15 @@ const App = () => {
       importance: AndroidImportance.HIGH,
     });
 
-    const toggledItems = (await getToggleItems()).join(',');
-
+    const items = await getToggleItems();
+    const toggledItems = items.length === 0 ? 'Nothing' : items.join(',');
+    
+    
     // Create a trigger notification
     await notifee.createTriggerNotification(
       {
         title: 'Current Availability',
-        body: `${toggledItems} are ON`,
+        body: `${toggledItems} is ON`,
         android: {
           channelId,
           importance: AndroidImportance.HIGH,
@@ -83,7 +85,8 @@ const App = () => {
 
   const handleAppStateChange = useCallback(
     async (nextAppState: AppStateStatus) => {
-      if (nextAppState === 'background') {
+      const token = await storageHelper.getItem(storageHelper.STORAGE_KEYS.TOKEN);
+      if (nextAppState === 'background' && token !== undefined) {
         await onCreateTriggerNotification();
       }
     },
