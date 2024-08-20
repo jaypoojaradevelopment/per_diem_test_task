@@ -39,12 +39,12 @@ const App = () => {
     );
     if (storedData) {
       const items: Item[] = JSON.parse(storedData);
-      const toggledItems: string[] = items.reduce((acc, element) => {
+      const toggledItems: string[] = items.reduce((acc: string[], element) => {
         if (element.isAvailable) {
           acc.push(element.itemName);
         }
         return acc;
-      }, [] as string[]);
+      }, []);
 
       return toggledItems;
     }
@@ -65,7 +65,7 @@ const App = () => {
     });
 
     const items = await getToggleItems();
-    const toggledItems = items.length === 0 ? 'Nothing' : items.join(',');
+    const toggledItems = items.length === 0 ? 'Nothing' : items.join(', ');
 
     // Create a trigger notification
     await notifee.createTriggerNotification(
