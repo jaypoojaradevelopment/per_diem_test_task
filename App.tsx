@@ -39,15 +39,14 @@ const App = () => {
     );
     if (storedData) {
       const items: Item[] = JSON.parse(storedData);
-      const toogledItems: string[] = [];
-
-      items.forEach(element => {
+      const toggledItems: string[] = items.reduce((acc, element) => {
         if (element.isAvailable) {
-          toogledItems.push(element.itemName);
+          acc.push(element.itemName);
         }
-      });
+        return acc;
+      }, [] as string[]);
 
-      return toogledItems;
+      return toggledItems;
     }
     return [];
   };
@@ -56,7 +55,7 @@ const App = () => {
     const date = new Date(Date.now());
     const trigger: TimestampTrigger = {
       type: TriggerType.TIMESTAMP,
-      timestamp: date.getTime() + 10 * 60000,
+      timestamp: date.getTime() + 1 * 60000,
     };
 
     const channelId = await notifee.createChannel({

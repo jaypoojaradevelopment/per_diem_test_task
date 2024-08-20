@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#e2e2e2',
+    borderColor: colors.backgroundColor,
     color: colors.black,
   },
   dividerContainer: {
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     flex: 1,
-    backgroundColor: '#e2e2e2',
+    backgroundColor: colors.backgroundColor,
   },
   dividerText: {
     color: colors.gray,
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   googleButton: {
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: '#e2e2e2',
+    borderColor: colors.backgroundColor,
     height: 45,
     alignItems: 'center',
     paddingHorizontal: 15,

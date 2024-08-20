@@ -2,6 +2,7 @@ import {useCallback, useEffect, useState} from 'react';
 import {Item} from '../components/ListTile';
 import storageHelper from '../helper/storageHelper';
 import lodash from 'lodash';
+import {SuccessToast} from '../helper/utilsHelper';
 
 const useItemList = () => {
   const [itemName, setItemName] = useState<string>();
@@ -55,6 +56,7 @@ const useItemList = () => {
     const update = itemList;
     update.push(newItem);
     await storeData(update);
+    SuccessToast('Item added successfully');
   };
 
   return {

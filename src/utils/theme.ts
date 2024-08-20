@@ -10,6 +10,7 @@ const colors = {
   black: '#000',
   transparent: 'transparent',
   gray: '#A2A2A2',
+  backgroundColor: '#e2e2e2',
 };
 
 export {colors};

@@ -59,7 +59,6 @@ const HomeScreen = () => {
 
   const handleLogOut = async () => {
     await storageHelper.removeItem(storageHelper.STORAGE_KEYS.TOKEN);
-    await storageHelper.removeItem(storageHelper.STORAGE_KEYS.LIST_DATA);
     hideMenu();
     navigation.replace('LoginScreen');
   };
