@@ -13,14 +13,8 @@ import {
   LoginScreen,
   OnBoardingScreen,
 } from './src/screens';
-import notifee, {
-  AndroidImportance,
-  TimestampTrigger,
-  TriggerType,
-} from '@notifee/react-native';
 import storageHelper from './src/helper/storageHelper';
-import {Item} from '@components/ListTile';
-
+import {onCreateTriggerNotification} from './src/helper/notificationService';
 export type AppStackParams = {
   AuthScreen: undefined;
   LoginScreen: undefined;
@@ -33,54 +27,6 @@ export type AppNavigationProps = StackNavigationProp<AppStackParams>;
 const Stack = createStackNavigator<AppStackParams>();
 
 const App = () => {
-  const getToggleItems = async () => {
-    const storedData = await storageHelper.getItem(
-      storageHelper.STORAGE_KEYS.LIST_DATA,
-    );
-    if (storedData) {
-      const items: Item[] = JSON.parse(storedData);
-      const toggledItems: string[] = items.reduce((acc: string[], element) => {
-        if (element.isAvailable) {
-          acc.push(element.itemName);
-        }
-        return acc;
-      }, []);
-
-      return toggledItems;
-    }
-    return [];
-  };
-
-  const onCreateTriggerNotification = useCallback(async () => {
-    const date = new Date(Date.now());
-    const trigger: TimestampTrigger = {
-      type: TriggerType.TIMESTAMP,
-      timestamp: date.getTime() + 10 * 60000,
-    };
-
-    const channelId = await notifee.createChannel({
-      id: 'default',
-      name: 'Default Channel',
-      importance: AndroidImportance.HIGH,
-    });
-
-    const items = await getToggleItems();
-    const toggledItems = items.length === 0 ? 'Nothing' : items.join(', ');
-
-    // Create a trigger notification
-    await notifee.createTriggerNotification(
-      {
-        title: 'Current Availability',
-        body: `${toggledItems} is ON`,
-        android: {
-          channelId,
-          importance: AndroidImportance.HIGH,
-        },
-      },
-      trigger,
-    );
-  }, []);
-
   const handleAppStateChange = useCallback(
     async (nextAppState: AppStateStatus) => {
       const token = await storageHelper.getItem(
@@ -90,7 +36,7 @@ const App = () => {
         await onCreateTriggerNotification();
       }
     },
-    [onCreateTriggerNotification],
+    [],
   );
 
   useEffect(() => {
