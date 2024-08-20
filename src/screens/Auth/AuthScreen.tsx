@@ -9,7 +9,6 @@ const AuthScreen = () => {
   const navigation = useNavigation<AppNavigationProps>();
 
   const init = useCallback(async () => {
-    SplashScreen.hide();
     const isOnBorading = await storageHelper.getItem(
       storageHelper.STORAGE_KEYS.IS_ON_BOARDING,
     );
@@ -32,6 +31,9 @@ const AuthScreen = () => {
 
   useEffect(() => {
     init();
+    return () => {
+      SplashScreen.hide();
+    };
   }, [init]);
 
   return (
