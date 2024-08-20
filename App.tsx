@@ -4,15 +4,21 @@ import {
   StackNavigationProp,
   createStackNavigator,
 } from '@react-navigation/stack';
-
+import Toast from 'react-native-toast-message';
 import {NavigationContainer} from '@react-navigation/native';
 import {colors} from './src/utils/theme';
-import {AuthScreen, HomeScreen, OnBoardingScreen} from './src/screens';
+import {
+  AuthScreen,
+  HomeScreen,
+  LoginScreen,
+  OnBoardingScreen,
+} from './src/screens';
 
 export type AppStackParams = {
-  Auth: undefined;
-  OnBoarding: undefined;
-  Home: undefined;
+  AuthScreen: undefined;
+  LoginScreen: undefined;
+  OnBoardingScreen: undefined;
+  HomeScreen: undefined;
 };
 
 export type AppNavigationProps = StackNavigationProp<AppStackParams>;
@@ -25,15 +31,17 @@ const App = () => {
       <StatusBar backgroundColor={colors.primary} />
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="OnBoarding"
+          initialRouteName="AuthScreen"
           screenOptions={{
             headerShown: false,
           }}>
-          <Stack.Screen name="Auth" component={AuthScreen} />
-          <Stack.Screen name="OnBoarding" component={OnBoardingScreen} />
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="AuthScreen" component={AuthScreen} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <Stack.Screen name="OnBoardingScreen" component={OnBoardingScreen} />
+          <Stack.Screen name="HomeScreen" component={HomeScreen} />
         </Stack.Navigator>
       </NavigationContainer>
+      <Toast />
     </>
   );
 };

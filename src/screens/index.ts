@@ -1,5 +1,6 @@
-import AuthScreen from './Auth';
-import HomeScreen from './Home';
-import OnBoardingScreen from './OnBoarding';
+import AuthScreen from './Auth/AuthScreen';
+import LoginScreen from './Login/LoginScreen';
+import HomeScreen from './Home/HomeScreen';
+import OnBoardingScreen from './OnBoarding/OnBoardingScreen';
 
-export {AuthScreen, HomeScreen, OnBoardingScreen};
+export {AuthScreen, LoginScreen, HomeScreen, OnBoardingScreen};

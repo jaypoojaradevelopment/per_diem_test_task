@@ -1,10 +1,12 @@
-import {Image, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {Images} from '../../assets';
 import {AppButton} from '../../components';
-import {styles} from './styles';
 import {useNavigation} from '@react-navigation/native';
 import {AppNavigationProps} from '../../../App';
+import storageHelper from '../../helper/storageHelper';
+import {colors} from '../../utils/theme';
+import {mobileHeight, mobileWidth} from '../../helper/responsive';
 
 type IntroData = {
   image: number | undefined;
@@ -12,7 +14,7 @@ type IntroData = {
   subheading: string;
 };
 
-const entries: IntroData[] = [
+const ENTRIES: IntroData[] = [
   {
     heading: 'Lets get started',
     subheading: 'Find the Best Coffee for you',
@@ -37,8 +39,12 @@ const OnBoardingScreen = () => {
   const onNext = () => {
     setCurrentIndex(prev => prev + 1);
   };
-  const onEnd = () => {
-    navigation.navigate('Auth');
+  const onEnd = async () => {
+    await storageHelper.saveItem(
+      storageHelper.STORAGE_KEYS.IS_ON_BOARDING,
+      'true',
+    );
+    navigation.replace('LoginScreen');
   };
 
   const onPrevious = () => {
@@ -47,13 +53,14 @@ const OnBoardingScreen = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <Image source={entries[currentIndex].image} style={styles.image} />
+      <Image source={ENTRIES[currentIndex].image} style={styles.image} />
 
       <View style={styles.bottomContainer}>
         <View style={styles.dotContainer}>
-          {entries.map((item, index) => {
+          {ENTRIES.map((item, index) => {
             return (
               <View
+                key={index.toString()}
                 style={[
                   styles.dot,
                   currentIndex === index
@@ -65,8 +72,8 @@ const OnBoardingScreen = () => {
           })}
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.subTitle}>{entries[currentIndex].heading}</Text>
-          <Text style={styles.title}>{entries[currentIndex].subheading}</Text>
+          <Text style={styles.subTitle}>{ENTRIES[currentIndex].heading}</Text>
+          <Text style={styles.title}>{ENTRIES[currentIndex].subheading}</Text>
         </View>
         <View style={styles.buttonContainer}>
           {currentIndex === 0 ? (
@@ -85,7 +92,7 @@ const OnBoardingScreen = () => {
             />
           )}
 
-          {currentIndex === 2 ? (
+          {currentIndex === ENTRIES.length - 1 ? (
             <AppButton title="Finish" onPress={() => onEnd()} />
           ) : (
             <AppButton title="Next" onPress={() => onNext()} />
@@ -97,3 +104,49 @@ const OnBoardingScreen = () => {
 };
 
 export default OnBoardingScreen;
+const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+  },
+  image: {
+    height: mobileHeight,
+  },
+  bottomContainer: {
+    backgroundColor: colors.white,
+    padding: 20,
+    borderRadius: 15,
+    position: 'absolute',
+    bottom: 0,
+    justifyContent: 'space-between',
+    width: mobileWidth,
+    height: mobileHeight / 3,
+  },
+  textContainer: {
+    gap: 20,
+  },
+  subTitle: {
+    fontWeight: '400',
+    fontSize: 18,
+  },
+  title: {
+    fontSize: 34,
+    fontWeight: 'bold',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  skipButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: colors.primary,
+  },
+  dotContainer: {flexDirection: 'row', gap: 10, justifyContent: 'center'},
+  dot: {
+    height: 10,
+    width: 10,
+    borderRadius: 10,
+  },
+  grayBackground: {backgroundColor: colors.gray},
+  primaryBackground: {backgroundColor: colors.primary},
+});

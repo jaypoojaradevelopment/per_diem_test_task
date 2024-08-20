@@ -1,25 +1,26 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STORAGE_KEYS = {
-  USER: 'user',
+  IS_ON_BOARDING: 'is_on_boarding',
+  TOKEN: 'token',
   LIST_DATA: 'list_data',
 };
 
-const saveItem = async (key: string, authToken: string) => {
+const saveItem = async (key: string, data: string) => {
   try {
-    await AsyncStorage.setItem(key, authToken).then();
-    return true;
+    await AsyncStorage.setItem(key, data).then();
+    return;
   } catch (error) {
-    return false;
+    throw error;
   }
 };
 
 const removeItem = async (key: string) => {
   try {
     await AsyncStorage.removeItem(key);
-    return true;
+    return;
   } catch (error) {
-    return false;
+    throw error;
   }
 };
 
@@ -29,10 +30,10 @@ const getItem = async (key: string) => {
     if (value !== null) {
       return value;
     } else {
-      return false;
+      return undefined;
     }
   } catch (error) {
-    return false;
+    throw error;
   }
 };
 

@@ -1,36 +1,42 @@
 import {StyleSheet, Switch, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import moment from 'moment';
 import {colors} from '../../utils/theme';
 
-export type userDataType = {
-  description: string;
-  date: Date;
+export type Item = {
+  id: string;
+  itemName: string;
+  date: string | Date;
   isAvailable: boolean;
 };
 
-type ListTileType = {
-  data: userDataType;
-};
+interface Props {
+  data: Item;
+  index: number;
+  onValueChange: (arg0: boolean) => void;
+}
 
-const ListTile = ({data}: ListTileType) => {
-  const [available, setAvailable] = useState<boolean>(data.isAvailable);
-
-  const date = moment(data.date).format('DD-MM-YYYY');
-
+const ListTile = ({data, index, onValueChange}: Props) => {
   return (
     <View style={styles.container}>
-      <View style={styles.gap}>
-        <Text style={styles.titleText}>{data.description}</Text>
-        <Text style={styles.dateText}>{date}</Text>
+      <View style={styles.indexContainer}>
+        <Text style={styles.indexText}>#{index + 1}</Text>
       </View>
-      <Switch
-        ios_backgroundColor={colors.gray}
-        trackColor={{false: colors.gray, true: colors.primary}}
-        thumbColor={colors.white}
-        onValueChange={val => setAvailable(val)}
-        value={available}
-      />
+      <View style={styles.detailsContainer}>
+        <Text style={styles.itemName}>{data.itemName}</Text>
+        <Text style={styles.dateText}>
+          {moment(data.date).format('DD-MM-YYYY')}
+        </Text>
+      </View>
+      <View style={styles.switchContainer}>
+        <Switch
+          ios_backgroundColor={colors.gray}
+          trackColor={{false: colors.gray, true: colors.primary}}
+          thumbColor={colors.white}
+          value={data.isAvailable}
+          onValueChange={onValueChange}
+        />
+      </View>
     </View>
   );
 };
@@ -39,27 +45,41 @@ export default ListTile;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: colors.primaryOpacity,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    backgroundColor: colors.white,
     borderRadius: 10,
-    width: '100%',
-    marginVertical: 10,
+    flexDirection: 'row',
+    gap: 12,
+    overflow: 'hidden',
   },
-  gap: {
-    gap: 10,
+  indexContainer: {
+    backgroundColor: colors.primary,
+    paddingVertical: 10,
+    width: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  titleText: {
+  indexText: {
+    color: colors.white,
+    fontWeight: 'bold',
+    fontSize: 20,
+    fontStyle: 'italic',
+  },
+  detailsContainer: {
+    flex: 1,
+    gap: 5,
+    paddingVertical: 8,
+    justifyContent: 'center',
+  },
+  itemName: {
     fontSize: 20,
     color: colors.black,
-    fontWeight: '800',
   },
   dateText: {
-    fontSize: 14,
-    color: colors.gray,
-    fontWeight: '400',
+    color: '#a2a2a2',
+    fontSize: 13,
+  },
+  switchContainer: {
+    justifyContent: 'center',
+    marginRight: 10,
   },
 });

@@ -1,10 +1,10 @@
 const colors = {
+  primary: '#AC97C9',
+  secondaryColor: '#F4F5F9',
   green: '#02AA15',
   yellow: '#F3FF00',
   red: '#FF0000',
-  primary: '#573a29',
   primaryOpacity: '#573a2916',
-  primaryLight: '#AC97C9',
   btnColor: '#FCA851',
   white: '#fff',
   black: '#000',
