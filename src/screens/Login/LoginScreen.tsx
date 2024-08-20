@@ -17,6 +17,7 @@ import {Images} from '../../assets/index';
 import storageHelper from '../../helper/storageHelper';
 import {colors} from '../../utils/theme';
 import {ErrorToast} from '../../helper/utilsHelper';
+import {onGoogleButtonPress} from '../../helper/firebaseAuthHelper';
 
 const AuthScreen = () => {
   const [username, setUsername] = useState<string>();
@@ -38,6 +39,26 @@ const AuthScreen = () => {
       }
       setLoading(false);
     }, 2500);
+  };
+
+  const handleLoginWithGoogle = async () => {
+    setLoading(true);
+    try {
+      const userDetail = await onGoogleButtonPress();
+      if (userDetail.user) {
+        await storageHelper.saveItem(
+          storageHelper.STORAGE_KEYS.TOKEN,
+          userDetail.user.displayName!,
+        );
+        navigation.replace('HomeScreen');
+      } else {
+        ErrorToast('Invalid username or password');
+      }
+    } catch (error) {
+      ErrorToast(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const isDisabled = Boolean(!username || !password);
@@ -79,7 +100,10 @@ const AuthScreen = () => {
             <View style={styles.divider} />
           </View>
 
-          <TouchableOpacity disabled={isLoading} style={styles.googleButton}>
+          <TouchableOpacity
+            disabled={isLoading}
+            style={styles.googleButton}
+            onPress={handleLoginWithGoogle}>
             <Image source={Images.google} style={styles.googleIcon} />
             <Text style={styles.googleButtonText}>With Google</Text>
           </TouchableOpacity>
