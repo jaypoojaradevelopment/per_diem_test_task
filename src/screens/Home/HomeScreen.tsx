@@ -18,6 +18,7 @@ import {useNavigation} from '@react-navigation/native';
 import {AppNavigationProps} from '../../../App';
 import AppIcon, {IconProvider} from '../../helper/appIcon';
 import {Menu, MenuItem} from 'react-native-material-menu';
+import EmptyComponent from '../../components/EmptyComponent';
 
 const HomeScreen = () => {
   const navigation = useNavigation<AppNavigationProps>();
@@ -152,6 +153,7 @@ const HomeScreen = () => {
             onValueChange={value => handleSwitch(value, index)}
           />
         )}
+        ListEmptyComponent={<EmptyComponent />}
       />
     </FullScreenContainer>
   );
@@ -200,6 +202,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   listContent: {
+    flexGrow: 1,
     gap: 15,
   },
   headerView: {
