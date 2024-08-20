@@ -110,7 +110,7 @@ const HomeScreen = () => {
           visible={visible}
           onRequestClose={hideMenu}
           anchor={
-            <TouchableOpacity onPress={showMenu}>
+            <TouchableOpacity onPress={showMenu} hitSlop={25}>
               <AppIcon
                 icon="more-v-a"
                 iconProvider={IconProvider.fontisto}

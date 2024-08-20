@@ -57,7 +57,7 @@ const OnBoardingScreen = () => {
 
       <View style={styles.bottomContainer}>
         <View style={styles.dotContainer}>
-          {ENTRIES.map((item, index) => {
+          {ENTRIES.map((_, index) => {
             return (
               <View
                 key={index.toString()}
@@ -81,21 +81,21 @@ const OnBoardingScreen = () => {
               title="Skip"
               style={styles.skipButton}
               isBorder={true}
-              onPress={() => onEnd()}
+              onPress={onEnd}
             />
           ) : (
             <AppButton
               title="Previous"
               style={styles.skipButton}
               isBorder={true}
-              onPress={() => onPrevious()}
+              onPress={onPrevious}
             />
           )}
 
           {currentIndex === ENTRIES.length - 1 ? (
-            <AppButton title="Finish" onPress={() => onEnd()} />
+            <AppButton title="Finish" onPress={onEnd} />
           ) : (
-            <AppButton title="Next" onPress={() => onNext()} />
+            <AppButton title="Next" onPress={onNext} />
           )}
         </View>
       </View>
