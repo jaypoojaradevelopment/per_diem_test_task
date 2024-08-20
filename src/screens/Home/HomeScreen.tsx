@@ -109,12 +109,12 @@ const HomeScreen = () => {
           onRequestClose={hideMenu}
           anchor={
             <TouchableOpacity onPress={showMenu}>
-            <AppIcon
-              icon="more-v-a"
-              iconProvider={IconProvider.fontisto}
-              size={18}
-              color={colors.black}
-            />
+              <AppIcon
+                icon="more-v-a"
+                iconProvider={IconProvider.fontisto}
+                size={18}
+                color={colors.black}
+              />
             </TouchableOpacity>
           }>
           <MenuItem onPress={handleLogOut}>Log Out</MenuItem>

@@ -10,12 +10,12 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 
-interface Props {
+type Props = {
   icon: string;
   size: number;
   color: string;
   iconProvider: IconProvider;
-}
+};
 
 const AppIcon = (props: Props) => {
   const {icon, size, color, iconProvider} = props;

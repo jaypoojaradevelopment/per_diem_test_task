@@ -67,8 +67,7 @@ const App = () => {
 
     const items = await getToggleItems();
     const toggledItems = items.length === 0 ? 'Nothing' : items.join(',');
-    
-    
+
     // Create a trigger notification
     await notifee.createTriggerNotification(
       {
@@ -85,7 +84,9 @@ const App = () => {
 
   const handleAppStateChange = useCallback(
     async (nextAppState: AppStateStatus) => {
-      const token = await storageHelper.getItem(storageHelper.STORAGE_KEYS.TOKEN);
+      const token = await storageHelper.getItem(
+        storageHelper.STORAGE_KEYS.TOKEN,
+      );
       if (nextAppState === 'background' && token !== undefined) {
         await onCreateTriggerNotification();
       }

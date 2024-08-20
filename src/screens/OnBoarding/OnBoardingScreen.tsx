@@ -127,12 +127,12 @@ const styles = StyleSheet.create({
   subTitle: {
     fontWeight: '400',
     fontSize: 18,
-    color: colors.black
+    color: colors.black,
   },
   title: {
     fontSize: 34,
     fontWeight: 'bold',
-    color: colors.black
+    color: colors.black,
   },
   buttonContainer: {
     flexDirection: 'row',

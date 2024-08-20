@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#e2e2e2',
-    color: colors.black
+    color: colors.black,
   },
   dividerContainer: {
     marginVertical: 35,

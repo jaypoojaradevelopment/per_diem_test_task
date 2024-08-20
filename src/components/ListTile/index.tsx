@@ -10,11 +10,11 @@ export type Item = {
   isAvailable: boolean;
 };
 
-interface Props {
+type Props = {
   data: Item;
   index: number;
   onValueChange: (arg0: boolean) => void;
-}
+};
 
 const ListTile = ({data, index, onValueChange}: Props) => {
   return (
