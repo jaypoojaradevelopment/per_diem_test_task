@@ -3,11 +3,15 @@ import React, {useCallback, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {AppNavigationProps} from '../../../App';
 import storageHelper from '../../helper/storageHelper';
+import SplashScreen from 'react-native-splash-screen';
+import notifee from '@notifee/react-native';
 
 const AuthScreen = () => {
   const navigation = useNavigation<AppNavigationProps>();
 
   const init = useCallback(async () => {
+    // Request permissions (required for iOS)
+    await notifee.requestPermission();
     const isOnBorading = await storageHelper.getItem(
       storageHelper.STORAGE_KEYS.IS_ON_BOARDING,
     );
@@ -30,7 +34,9 @@ const AuthScreen = () => {
 
   useEffect(() => {
     init();
-    return () => console.log('close');
+    return () => {
+      SplashScreen.hide();
+    };
   }, [init]);
 
   return (

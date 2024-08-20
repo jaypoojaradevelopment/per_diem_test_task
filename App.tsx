@@ -1,5 +1,5 @@
-import {AppState, AppStateStatus, Platform, StatusBar} from 'react-native';
-import React, {useEffect} from 'react';
+import {AppState, AppStateStatus, StatusBar} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
 import {
   StackNavigationProp,
   createStackNavigator,
@@ -13,12 +13,13 @@ import {
   LoginScreen,
   OnBoardingScreen,
 } from './src/screens';
-import SplashScreen from 'react-native-splash-screen';
 import notifee, {
   AndroidImportance,
   TimestampTrigger,
   TriggerType,
 } from '@notifee/react-native';
+import storageHelper from './src/helper/storageHelper';
+import {Item} from '@components/ListTile';
 
 export type AppStackParams = {
   AuthScreen: undefined;
@@ -32,38 +33,30 @@ export type AppNavigationProps = StackNavigationProp<AppStackParams>;
 const Stack = createStackNavigator<AppStackParams>();
 
 const App = () => {
-  useEffect(() => {
-    const appStateId = AppState.addEventListener(
-      'change',
-      handleAppStateChange,
+  const getToggleItems = async () => {
+    const storedData = await storageHelper.getItem(
+      storageHelper.STORAGE_KEYS.LIST_DATA,
     );
+    if (storedData) {
+      const items: Item[] = JSON.parse(storedData);
+      const toogledItems: string[] = [];
 
-    return () => {
-      appStateId.remove(console.log('the app is closed'));
-    };
-  }, []);
+      items.forEach(element => {
+        if (element.isAvailable) {
+          toogledItems.push(element.itemName);
+        }
+      });
 
-  const handleAppStateChange = async (nextAppState: AppStateStatus) => {
-    console.log('nextAppState:::::', nextAppState);
-
-    // if(Platform.OS === 'ios'){
-    if (nextAppState === 'background') {
-      console.log('the app is closed');
-      await onCreateTriggerNotification();
+      return toogledItems;
     }
-    // }
+    return [];
   };
 
-  const onCreateTriggerNotification = async () => {
+  const onCreateTriggerNotification = useCallback(async () => {
     const date = new Date(Date.now());
-    // date.setHours(11);
-    // date.setMinutes(10);
-    console.log('trigger time:', date.getTime() + 1 * 60000);
-
-    // Create a time-based trigger
     const trigger: TimestampTrigger = {
       type: TriggerType.TIMESTAMP,
-      timestamp: date.getTime() + 1 * 60000,
+      timestamp: date.getTime() + 10 * 60000,
     };
 
     const channelId = await notifee.createChannel({
@@ -72,11 +65,13 @@ const App = () => {
       importance: AndroidImportance.HIGH,
     });
 
+    const toggledItems = (await getToggleItems()).join(',');
+
     // Create a trigger notification
     await notifee.createTriggerNotification(
       {
-        title: 'Meeting with Jane',
-        body: 'Today at 11:20am',
+        title: 'Current Availability',
+        body: `${toggledItems} are ON`,
         android: {
           channelId,
           importance: AndroidImportance.HIGH,
@@ -84,17 +79,32 @@ const App = () => {
       },
       trigger,
     );
-  };
+  }, []);
+
+  const handleAppStateChange = useCallback(
+    async (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'background') {
+        await onCreateTriggerNotification();
+      }
+    },
+    [onCreateTriggerNotification],
+  );
+
+  useEffect(() => {
+    const appStateId = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
+
+    return () => {
+      appStateId.remove();
+    };
+  }, [handleAppStateChange]);
 
   return (
     <>
       <StatusBar backgroundColor={colors.primary} />
-      <NavigationContainer
-        onReady={async () => {
-          SplashScreen.hide();
-          // Request permissions (required for iOS)
-          await notifee.requestPermission();
-        }}>
+      <NavigationContainer>
         <Stack.Navigator
           initialRouteName="AuthScreen"
           screenOptions={{

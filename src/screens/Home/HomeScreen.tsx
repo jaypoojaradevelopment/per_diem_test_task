@@ -13,10 +13,7 @@ import {colors} from '../../utils/theme';
 import {FullScreenContainer, ListTile, DatePicker} from '../../components';
 import storageHelper from '../../helper/storageHelper';
 import lodash from 'lodash';
-import notifee, {
-  AndroidImportance,
-  AuthorizationStatus,
-} from '@notifee/react-native';
+import notifee, {AuthorizationStatus} from '@notifee/react-native';
 
 const HomeScreen = () => {
   const [itemName, setItemName] = useState<string>();
@@ -40,25 +37,11 @@ const HomeScreen = () => {
 
   const checkNotificationPermission = async () => {
     const settings = await notifee.getNotificationSettings();
-    if (settings.authorizationStatus == AuthorizationStatus.AUTHORIZED) {
-      console.log('Notification permissions has been authorized');
-    } else if (settings.authorizationStatus == AuthorizationStatus.DENIED) {
-      console.log('Notification permissions has been denied');
+    if (settings.authorizationStatus === AuthorizationStatus.DENIED) {
       Alert.alert(
         'Notification permission is required',
-        '',
-        [
-          {
-            text: 'Go to Setttings',
-            onPress: () => {
-              notifee.openNotificationSettings();
-            },
-            style: 'default',
-          },
-        ],
-        {
-          cancelable: true,
-        },
+        'Please enable notifications form settings to receive notification',
+        [],
       );
     }
   };
@@ -101,37 +84,9 @@ const HomeScreen = () => {
 
   const isDisabled = Boolean(!itemName || !date);
 
-  async function onDisplayNotification() {
-    // Request permissions (required for iOS)
-    // await notifee.requestPermission();
-
-    // Create a channel (required for Android)
-    const channelId = await notifee.createChannel({
-      id: 'default',
-      name: 'Default Channel',
-      importance: AndroidImportance.HIGH,
-    });
-
-    // Display a notification
-    await notifee.displayNotification({
-      title: 'Notification Title',
-      body: 'Main body content of the notification',
-      android: {
-        channelId,
-        importance: AndroidImportance.HIGH,
-        pressAction: {
-          id: 'default',
-        },
-      },
-    });
-  }
-
   return (
     <FullScreenContainer style={styles.container}>
       <Text style={styles.headerText}>Home</Text>
-      <TouchableOpacity onPress={onDisplayNotification}>
-        <Text>Notif</Text>
-      </TouchableOpacity>
       <View style={styles.inputContainer}>
         <View style={styles.inputWrapper}>
           <TextInput
