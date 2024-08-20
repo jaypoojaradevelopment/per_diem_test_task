@@ -14,7 +14,7 @@ import {
   OnBoardingScreen,
 } from './src/screens';
 import storageHelper from './src/helper/storageHelper';
-import {onCreateTriggerNotification} from './src/helper/notificationService';
+import {createTriggerNotification} from './src/helper/notificationService';
 export type AppStackParams = {
   AuthScreen: undefined;
   LoginScreen: undefined;
@@ -33,7 +33,7 @@ const App = () => {
         storageHelper.STORAGE_KEYS.TOKEN,
       );
       if (nextAppState === 'background' && token !== undefined) {
-        await onCreateTriggerNotification();
+        await createTriggerNotification();
       }
     },
     [],

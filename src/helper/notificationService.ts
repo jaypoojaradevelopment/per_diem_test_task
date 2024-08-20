@@ -24,7 +24,7 @@ const getToggleItems = async () => {
   return [];
 };
 
-export const onCreateTriggerNotification = async () => {
+export const createTriggerNotification = async () => {
   const date = new Date(Date.now());
   const trigger: TimestampTrigger = {
     type: TriggerType.TIMESTAMP,
