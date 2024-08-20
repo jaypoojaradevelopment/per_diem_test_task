@@ -22,7 +22,7 @@ const DatePicker = ({
           icon="calendar"
           iconProvider={IconProvider.entypo}
           size={20}
-          color={date ? colors.black : '#a2a2a2'}
+          color={date ? colors.black : colors.gray}
         />
         <Text style={date ? styles.datePickerText : styles.placeholderText}>
           {date ? moment(date).format('DD-MM-YYYY') : 'Select date'}
@@ -57,6 +57,6 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   placeholderText: {
-    color: '#a2a2a2',
+    color: colors.gray,
   },
 });

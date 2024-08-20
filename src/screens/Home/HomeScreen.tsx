@@ -27,6 +27,7 @@ const HomeScreen = () => {
   const [visible, setVisible] = useState<boolean>(false);
 
   const init = useCallback(async () => {
+    await notifee.requestPermission();
     const storedData = await storageHelper.getItem(
       storageHelper.STORAGE_KEYS.LIST_DATA,
     );

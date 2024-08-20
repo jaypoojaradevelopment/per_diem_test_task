@@ -6,7 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import {AppNavigationProps} from '../../../App';
 import storageHelper from '../../helper/storageHelper';
 import {colors} from '../../utils/theme';
-import {mobileHeight, mobileWidth} from '../../helper/responsive';
+import {mobileHeight, mobileWidth} from '../../helper/utilsHelper';
 
 type IntroData = {
   image: number | undefined;

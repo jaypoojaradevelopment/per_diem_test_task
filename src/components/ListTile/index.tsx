@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   dateText: {
-    color: '#a2a2a2',
+    color: colors.gray,
     fontSize: 13,
   },
   switchContainer: {

@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -23,6 +24,7 @@ const AuthScreen = () => {
   const [username, setUsername] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [isGoogleLoading, setGoogleLoading] = useState<boolean>(false);
   const navigation = useNavigation<AppNavigationProps>();
 
   const handleLogin = () => {
@@ -42,7 +44,7 @@ const AuthScreen = () => {
   };
 
   const handleLoginWithGoogle = async () => {
-    setLoading(true);
+    setGoogleLoading(true);
     try {
       const userDetail = await onGoogleButtonPress();
       if (userDetail.user) {
@@ -54,10 +56,10 @@ const AuthScreen = () => {
       } else {
         ErrorToast('Invalid username or password');
       }
-    } catch (error) {
-      ErrorToast(error.message);
+    } catch (error: unknown) {
+      ErrorToast(error);
     } finally {
-      setLoading(false);
+      setGoogleLoading(false);
     }
   };
 
@@ -106,7 +108,12 @@ const AuthScreen = () => {
             disabled={isLoading}
             style={styles.googleButton}
             onPress={handleLoginWithGoogle}>
-            <Image source={Images.google} style={styles.googleIcon} />
+            {isGoogleLoading ? (
+              <ActivityIndicator color={colors.primary} />
+            ) : (
+              <Image source={Images.google} style={styles.googleIcon} />
+            )}
+
             <Text style={styles.googleButtonText}>With Google</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -162,7 +169,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e2e2e2',
   },
   dividerText: {
-    color: '#a2a2a2',
+    color: colors.gray,
   },
   googleButton: {
     borderWidth: 1,
