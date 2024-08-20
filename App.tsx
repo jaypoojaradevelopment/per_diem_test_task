@@ -13,6 +13,7 @@ import {
   LoginScreen,
   OnBoardingScreen,
 } from './src/screens';
+import SplashScreen from 'react-native-splash-screen';
 
 export type AppStackParams = {
   AuthScreen: undefined;
@@ -29,7 +30,10 @@ const App = () => {
   return (
     <>
       <StatusBar backgroundColor={colors.primary} />
-      <NavigationContainer>
+      <NavigationContainer
+        onReady={() => {
+          SplashScreen.hide();
+        }}>
         <Stack.Navigator
           initialRouteName="AuthScreen"
           screenOptions={{
